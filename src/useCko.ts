@@ -2,16 +2,12 @@
 
 import { createContext } from './payment';
 import { getSaveInstrumentKey, CardConfiguration } from './configuration';
-import { ref, computed } from '@vue/composition-api';
+import { sharedRef } from '@vue-storefront/core';
+import { computed } from '@vue/composition-api';
 import { CkoPaymentType } from './helpers';
 import useCkoCard from './useCkoCard';
 import useCkoPaypal from './useCkoPaypal';
 import useCkoSofort from './useCkoSofort';
-
-const error = ref(null);
-const availableMethods = ref([]);
-const contextId = ref<string>(null);
-const requiresCvv = ref(false);
 
 interface PaymentMethods {
   card?: boolean;
@@ -25,8 +21,6 @@ interface PaymentMethodsConfig {
   paypal?: any;
 }
 
-const selectedPaymentMethod = ref(CkoPaymentType.NOT_SELECTED);
-
 const setSavePaymentInstrument = (newSavePaymentInstrument: boolean) => {
   localStorage.setItem(getSaveInstrumentKey(), JSON.stringify(newSavePaymentInstrument));
 };
@@ -36,6 +30,13 @@ const loadSavePaymentInstrument = (): boolean => {
 };
 
 const useCko = () => {
+
+  const error = sharedRef(null, 'useCko-error');
+  const availableMethods = sharedRef([], 'useCko-availableMethods');
+  const contextId = sharedRef<string>(null, 'useCko-contextId');
+  const requiresCvv = sharedRef(false, 'useCko-requiresCvv');
+  const selectedPaymentMethod = sharedRef(CkoPaymentType.NOT_SELECTED, 'useCko-selectedPaymentMethod');
+
   const {
     initCardForm,
     makePayment: makeCardPayment,
