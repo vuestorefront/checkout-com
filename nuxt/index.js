@@ -1,5 +1,5 @@
 import path from 'path';
-import proxyMiddleware from '@vue-storefront/checkout-com/nuxt/proxyMiddleware';
+import proxyMiddleware from './proxyMiddleware';
 
 const defaultPaymentMethods = {
   cc: true,

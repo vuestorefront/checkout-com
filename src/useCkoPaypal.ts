@@ -1,12 +1,12 @@
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 
 import { createContext, createPayment } from './payment';
-import { ref } from '@vue/composition-api';
 import { CkoPaymentType, getCurrentPaymentMethodPayload } from './helpers';
-
-const error = ref(null);
+import { sharedRef } from '@vue-storefront/core';
 
 const useCkoPaypal = () => {
+  const error = sharedRef(null, 'useCkoPaypal-error');
+
   const makePayment = async ({
     cartId,
     email,
