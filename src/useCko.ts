@@ -1,24 +1,23 @@
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 
 import { createContext } from './payment';
-import { getSaveInstrumentKey, CardConfiguration } from './configuration';
+import { getSaveInstrumentKey, CardConfiguration, KlarnaConfiguration } from './configuration';
 import { sharedRef } from '@vue-storefront/core';
 import { computed } from '@vue/composition-api';
 import { CkoPaymentType } from './helpers';
 import useCkoCard from './useCkoCard';
 import useCkoPaypal from './useCkoPaypal';
 import useCkoSofort from './useCkoSofort';
+import useCkoKlarna from './useCkoKlarna';
 
 interface PaymentMethods {
   card?: boolean;
   klarna?: boolean;
-  paypal?: boolean;
 }
 
 interface PaymentMethodsConfig {
   card?: CardConfiguration;
-  klarna?: any;
-  paypal?: any;
+  klarna?: KlarnaConfiguration;
 }
 
 const setSavePaymentInstrument = (newSavePaymentInstrument: boolean) => {
@@ -49,6 +48,13 @@ const useCko = () => {
     storedPaymentInstruments,
     submitDisabled
   } = useCkoCard(selectedPaymentMethod);
+
+  const {
+    initKlarnaForm,
+    submitForm: submitKlarnaForm,
+    makePayment: makeKlarnaPayment,
+    error: klarnaError
+  } = useCkoKlarna();
 
   const {
     makePayment: makePaypalPayment,
@@ -83,12 +89,16 @@ const useCko = () => {
       return;
     }
     const hasSpecifiedMethods = initMethods && Object.keys(initMethods).length > 0;
-    for (const { name } of availableMethods.value) {
-      if (!hasSpecifiedMethods || initMethods[name]) {
-        const methodConfig = config[name];
-        switch (name) {
+    
+    for (const currentPaymentMethod of availableMethods.value) {
+      if (!hasSpecifiedMethods || initMethods[currentPaymentMethod.name]) {
+        const methodConfig = config[currentPaymentMethod.name];
+        switch (currentPaymentMethod.name) {
           case 'card':
             initCardForm(methodConfig);
+            break;
+          case 'klarna':
+            initKlarnaForm(methodConfig, currentPaymentMethod, contextId.value);
             break;
         }
       }
@@ -121,6 +131,9 @@ const useCko = () => {
       }
       finalizeTransactionFunction = makeCardPayment;
       localError = cardError;
+    } else if (selectedPaymentMethod.value === CkoPaymentType.KLARNA) {
+      finalizeTransactionFunction = makeKlarnaPayment;
+      localError = klarnaError;
     } else if (selectedPaymentMethod.value === CkoPaymentType.PAYPAL) {
       finalizeTransactionFunction = makePaypalPayment;
       localError = paypalError;
@@ -162,6 +175,7 @@ const useCko = () => {
     loadAvailableMethods,
     initForm,
     submitCardForm,
+    submitKlarnaForm: ctx => submitKlarnaForm(ctx || contextId.value),
     makePayment,
     setPaymentInstrument,
     setSavePaymentInstrument,

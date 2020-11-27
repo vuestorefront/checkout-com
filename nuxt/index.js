@@ -3,7 +3,7 @@ import proxyMiddleware from './proxyMiddleware';
 
 const defaultPaymentMethods = {
   cc: true,
-  klarna: false
+  klarna: true
 };
 
 const paymentMethodSdk = {
