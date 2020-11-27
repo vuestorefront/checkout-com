@@ -1,6 +1,8 @@
 import useCkoPaypal from '../src/useCkoPaypal';
 import { createContext, createPayment } from '../src/payment';
 import { getCurrentPaymentMethodPayload, CkoPaymentType } from '../src/helpers';
+import { configureContext } from '@vue-storefront/core/src/utils';
+import { ref } from '@vue/composition-api';
 
 const defaultPaymentResponse = {
   status: 200
@@ -17,6 +19,26 @@ jest.mock('../src/helpers', () => ({
   getCurrentPaymentMethodPayload: jest.fn(),
   CkoPaymentType: jest.requireActual('../src/helpers').CkoPaymentType
 }));
+jest.mock('@vue-storefront/core', () => {
+  const refsMap = new Map();
+  return { 
+    sharedRef: (value, key) => {
+      const givenKey = key || value;
+
+      if (refsMap.has(givenKey)) {
+        return refsMap.get(givenKey);
+      }
+
+      const newRef = ref(
+        key ? value : null
+      );
+
+      refsMap.set(givenKey, newRef);
+
+      return newRef;
+    } 
+  }
+})
 
 const {
   makePayment,
@@ -28,6 +50,14 @@ describe('[checkout-com] useCkoPaypal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
+  configureContext({
+    useContext() {
+      return {
+        $sharedRefsMap: new Map()
+      }
+    }
+  })
 
   it('does not create context if provided', async () => {
 

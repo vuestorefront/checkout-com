@@ -175,7 +175,7 @@ const useCko = () => {
     loadAvailableMethods,
     initForm,
     submitCardForm,
-    submitKlarnaForm: ctx => submitKlarnaForm(ctx || contextId.value),
+    submitKlarnaForm: (ctx?) => submitKlarnaForm(ctx || contextId.value),
     makePayment,
     setPaymentInstrument,
     setSavePaymentInstrument,

@@ -1,10 +1,14 @@
 import useCko from '../src/useCko';
 import { createContext } from '../src/payment';
 import { CkoPaymentType } from '../src/helpers';
+import { ref } from '@vue/composition-api';
 
 const contextPaymentMethods = [
   {
     name: 'paypal'
+  },
+  {
+    name: 'klarna'
   }
 ];
 
@@ -37,6 +41,24 @@ const useCkoPaypalMock = {
     }
   }
 };
+const useCkoSofortMock = {
+  makePayment: jest.fn(() => finalizeTransactionResponse),
+  error: {
+    value: {
+      message: 'some-sofort-weird-error'
+    }
+  }
+};
+const useCkoKlarnaMock = {
+  makePayment: jest.fn(() => finalizeTransactionResponse),
+  initKlarnaForm: jest.fn(),
+  submitForm: jest.fn(),
+  error: {
+    value: {
+      message: 'some-klarna-weird-error'
+    }
+  }
+};
 const useCkoCardMock = {
   initCardForm: jest.fn(),
   makePayment: jest.fn(() => finalizeTransactionResponse),
@@ -48,8 +70,10 @@ const useCkoCardMock = {
   storedPaymentInstruments: jest.fn(),
   submitDisabled: jest.fn()
 };
+jest.mock('../src/useCkoSofort', () => () => useCkoSofortMock);
 jest.mock('../src/useCkoPaypal', () => () => useCkoPaypalMock);
 jest.mock('../src/useCkoCard', () => () => useCkoCardMock);
+jest.mock('../src/useCkoKlarna', () => () => useCkoKlarnaMock);
 jest.mock('../src/helpers', () => ({
   getCurrentPaymentMethodPayload: jest.fn(),
   CkoPaymentType: jest.requireActual('../src/helpers').CkoPaymentType
@@ -63,6 +87,27 @@ jest.mock('../src/payment', () => ({
     data: contextData
   }))
 }));
+
+jest.mock('@vue-storefront/core', () => {
+  const refsMap = new Map();
+  return { 
+    sharedRef: (value, key) => {
+      const givenKey = key || value;
+
+      if (refsMap.has(givenKey)) {
+        return refsMap.get(givenKey);
+      }
+
+      const newRef = ref(
+        key ? value : null
+      );
+
+      refsMap.set(givenKey, newRef);
+
+      return newRef;
+    } 
+  }
+})
 
 const localStorageMock = {
   removeItem: jest.fn(),
@@ -85,12 +130,13 @@ const {
   isCvvRequired,
   loadAvailableMethods,
   initForm,
+  submitKlarnaForm,
   makePayment,
   setSavePaymentInstrument,
   loadSavePaymentInstrument
 } = useCko();
 
-describe('[checkout-com] useCkoPaypal', () => {
+describe('[checkout-com] useCko', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -210,11 +256,44 @@ describe('[checkout-com] useCkoPaypal', () => {
     expect(useCkoCardMock.initCardForm).toHaveBeenCalled();
   });
 
+  it('inits klarna form in initForm if available and requested', async () => {
+    await loadAvailableMethods('1');
+    initForm({
+      klarna: true
+    }, {});
+
+    expect(useCkoKlarnaMock.initKlarnaForm).toHaveBeenCalled();
+  });
+
+
   it('inits card form in initForm if available without params', async () => {
     await loadAvailableMethods('1');
     initForm();
 
     expect(useCkoCardMock.initCardForm).toHaveBeenCalled();
+  });
+
+  it('inits klarna form in initForm if available and requested', async () => {
+    await loadAvailableMethods('1');
+    initForm({
+      klarna: true
+    }, {});
+
+    expect(useCkoKlarnaMock.initKlarnaForm).toHaveBeenCalled();
+  });
+
+  it('calls submitKlarnaForm with provided context', () => {
+    const ctx = 15;
+    submitKlarnaForm(ctx);
+
+    expect(useCkoKlarnaMock.submitForm).toHaveBeenCalledWith(ctx);
+  });
+
+  it('calls submitKlarnaForm with fetched value by default', async () => {
+    await loadAvailableMethods('1');
+    submitKlarnaForm();
+
+    expect(useCkoKlarnaMock.submitForm).toHaveBeenCalledWith(customerId);
   });
 
   it('inits card form in initForm if available with custom config', async () => {
@@ -361,6 +440,72 @@ describe('[checkout-com] useCkoPaypal', () => {
     const response = await makePayment(payload);
 
     expect(useCkoPaypalMock.makePayment).toHaveBeenCalledWith(expectedPayload);
+    expect(response).toBe(finalizeTransactionResponse);
+  });
+
+  it('makes payment for Sofort', async () => {
+    selectedPaymentMethod.value = CkoPaymentType.SOFORT;
+    /*eslint-disable */
+    const payload = {
+      cartId: '1',
+      email: 'a@gmail.com',
+      contextDataId: '12',
+      secure3d: true,
+      success_url: null,
+      failure_url: null
+    }
+
+    localStorageMock.getItem.mockImplementation(() => 'true')
+
+    const expectedPayload = {
+      cartId: '1',
+      email: 'a@gmail.com',
+      contextDataId: '12',
+      cvv: null,
+      secure3d: true,
+      success_url: null,
+      failure_url: null,
+      savePaymentInstrument: true,
+      reference: null
+    }
+    /* eslint-enable */
+
+    const response = await makePayment(payload);
+
+    expect(useCkoSofortMock.makePayment).toHaveBeenCalledWith(expectedPayload);
+    expect(response).toBe(finalizeTransactionResponse);
+  });
+
+  it('makes payment for Klarna', async () => {
+    selectedPaymentMethod.value = CkoPaymentType.KLARNA;
+    /*eslint-disable */
+    const payload = {
+      cartId: '1',
+      email: 'a@gmail.com',
+      contextDataId: '12',
+      secure3d: true,
+      success_url: null,
+      failure_url: null
+    }
+
+    localStorageMock.getItem.mockImplementation(() => 'true')
+
+    const expectedPayload = {
+      cartId: '1',
+      email: 'a@gmail.com',
+      contextDataId: '12',
+      cvv: null,
+      secure3d: true,
+      success_url: null,
+      failure_url: null,
+      savePaymentInstrument: true,
+      reference: null
+    }
+    /* eslint-enable */
+
+    const response = await makePayment(payload);
+
+    expect(useCkoKlarnaMock.makePayment).toHaveBeenCalledWith(expectedPayload);
     expect(response).toBe(finalizeTransactionResponse);
   });
 
