@@ -8,8 +8,7 @@ const defaultConfig = {
     localization: null
   },
   klarna: {
-    containerSelector: '#klarna_container',
-    mounted: () => {}
+    containerSelector: '#klarna_container'
   },
   channels: {},
   currentChannel: null
@@ -23,7 +22,6 @@ const config = {
 interface KlarnaConfiguration {
   // #klarna_container
   containerSelector: string;
-  mounted?: (response: any) => void;
 }
 
 interface CardConfiguration {
@@ -84,7 +82,6 @@ const setChannel = (channel: string) => {
   config.card.style = pickedChannel.card?.style || defaultStyles;
   config.card.localization = pickedChannel.card?.localization || null;
   config.klarna.containerSelector = pickedChannel.klarna?.containerSelector || config.klarna.containerSelector;
-  config.klarna.mounted = pickedChannel.klarna?.mounted || config.klarna.mounted;
   config.tokenizedCardKey = pickedChannel.tokenizedCardKey || config.tokenizedCardKey;
   config.saveInstrumentKey = pickedChannel.saveInstrumentKey || config.saveInstrumentKey;
   config.ctApiUrl = pickedChannel.ctApiUrl || config.ctApiUrl;
@@ -117,7 +114,6 @@ const getFramesLocalization = () => config.card.localization;
 
 // Klarna
 const getKlarnaContainerSelector = () => config.klarna.containerSelector;
-const getKlarnaOnMounted = () => config.klarna.mounted;
 
 export {
   defaultConfig,
@@ -132,7 +128,6 @@ export {
   getTransactionTokenKey,
   getSaveInstrumentKey,
   getKlarnaContainerSelector,
-  getKlarnaOnMounted,
   Configuration,
   CardConfiguration,
   KlarnaConfiguration

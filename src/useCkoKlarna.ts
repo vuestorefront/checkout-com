@@ -2,7 +2,7 @@
 
 import { createPayment } from './payment';
 import { CkoPaymentType, getCurrentPaymentMethodPayload, getTransactionToken, removeTransactionToken, setTransactionToken } from './helpers';
-import { KlarnaConfiguration, getKlarnaContainerSelector, getKlarnaOnMounted } from './configuration';
+import { KlarnaConfiguration, getKlarnaContainerSelector } from './configuration';
 import { sharedRef } from '@vue-storefront/core';
 
 declare const Klarna;
@@ -78,8 +78,7 @@ const useCkoKlarna = () => {
         payment_method_categories: apm.metadata.details.payment_method_category.map(cat => cat.identifier),
         instance_id: contextId
       },
-      apm.metadata.session,
-      klarnaParams?.mounted || getKlarnaOnMounted()
+      apm.metadata.session
     );
   };
 

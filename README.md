@@ -373,10 +373,7 @@ E.g:
 ['@vue-storefront/checkout-com/nuxt', {
     // ...
     klarna: {
-        containerSelector: '#my-klarna-div',
-        mounted (response) {
-            console.log('Hello, I have just mounted klarna component!: ', response)
-        }
+        containerSelector: '#my-klarna-div'
     }
 }]
 ```
