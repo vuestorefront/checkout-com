@@ -1,7 +1,6 @@
 import useCko from '../src/useCko';
 import { createContext } from '../src/payment';
 import { CkoPaymentType } from '../src/helpers';
-import { ref } from '@vue/composition-api';
 
 const contextPaymentMethods = [
   {
@@ -88,26 +87,9 @@ jest.mock('../src/payment', () => ({
   }))
 }));
 
-jest.mock('@vue-storefront/core', () => {
-  const refsMap = new Map();
-  return { 
-    sharedRef: (value, key) => {
-      const givenKey = key || value;
-
-      if (refsMap.has(givenKey)) {
-        return refsMap.get(givenKey);
-      }
-
-      const newRef = ref(
-        key ? value : null
-      );
-
-      refsMap.set(givenKey, newRef);
-
-      return newRef;
-    } 
-  }
-})
+jest.mock('@vue-storefront/core', () => ({
+  sharedRef: value => ({value})
+}))
 
 const localStorageMock = {
   removeItem: jest.fn(),

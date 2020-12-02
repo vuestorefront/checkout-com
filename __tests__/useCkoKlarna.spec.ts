@@ -34,26 +34,9 @@ jest.mock('../src/configuration', () => ({
   CardConfiguration: jest.requireActual('../src/configuration').CardConfiguration
 }));
 
-jest.mock('@vue-storefront/core', () => {
-  const refsMap = new Map();
-  return { 
-    sharedRef: (value, key) => {
-      const givenKey = key || value;
-
-      if (refsMap.has(givenKey)) {
-        return refsMap.get(givenKey);
-      }
-
-      const newRef = ref(
-        key ? value : null
-      );
-
-      refsMap.set(givenKey, newRef);
-
-      return newRef;
-    } 
-  }
-})
+jest.mock('@vue-storefront/core', () => ({
+  sharedRef: value => ({value})
+}))
 
 const klarnaMock = {
   Payments: {

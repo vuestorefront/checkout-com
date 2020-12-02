@@ -33,35 +33,11 @@ jest.mock('../src/configuration', () => ({
   CardConfiguration: jest.requireActual('../src/configuration').CardConfiguration
 }));
 
-jest.mock('@vue-storefront/core/src/utils/context', () => ({
-  useContext: () => ({
-    $sharedRefsMap: new Map(),
-
-  }),
-  configureContext: jest.requireActual('@vue-storefront/core/src/utils/context').configureContext,
-  generateContext: jest.requireActual('@vue-storefront/core/src/utils/context').generateContext
-}))
-
-jest.mock('@vue-storefront/core', () => {
-  const refsMap = new Map();
-  return { 
-    sharedRef: (value, key) => {
-      const givenKey = key || value;
-
-      if (refsMap.has(givenKey)) {
-        return refsMap.get(givenKey);
-      }
-
-      const newRef = ref(
-        key ? value : null
-      );
-
-      refsMap.set(givenKey, newRef);
-
-      return newRef;
-    } 
+jest.mock('@vue-storefront/core', () => ({
+  sharedRef(value) {
+    return ref(value)
   }
-})
+}))
 
 const framesMock = {
   submitCard: jest.fn(),
