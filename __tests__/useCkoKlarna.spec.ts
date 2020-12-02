@@ -1,7 +1,6 @@
 import useCkoKlarna from '../src/useCkoKlarna';
 import { createPayment } from '../src/payment';
 import { getCurrentPaymentMethodPayload, getTransactionToken, setTransactionToken, CkoPaymentType } from '../src/helpers';
-import { getKlarnaOnMounted } from '../src/configuration';
 import { ref } from '@vue/composition-api';
 
 const defaultPaymentResponse = {
@@ -32,7 +31,6 @@ jest.mock('../src/configuration', () => ({
   getTransactionTokenKey: jest.fn(),
   getFramesLocalization: jest.fn(),
   getKlarnaContainerSelector: jest.fn(() => klarnaContainerSelector),
-  getKlarnaOnMounted: jest.fn(() => {}),
   CardConfiguration: jest.requireActual('../src/configuration').CardConfiguration
 }));
 
@@ -273,8 +271,6 @@ describe('[checkout-com] useCkoKlarna', () => {
     });
 
     it('initCardForm runs Klarna.Payments.init & Klarna.Payments.load', () => {
-      const funcMock = 'xczxczxczxcadasdasdas';
-      (getKlarnaOnMounted as jest.Mock).mockImplementation(() => funcMock);
       initKlarnaForm(null, apm, contextId);
 
       /*eslint-disable */
@@ -290,15 +286,11 @@ describe('[checkout-com] useCkoKlarna', () => {
       /* eslint-enable */
 
       expect(klarnaMock.Payments.load.mock.calls[0][1]).toBe(apm.metadata.session);
-      expect(klarnaMock.Payments.load.mock.calls[0][2]).toBe(funcMock);
     });
 
     it('initCardForm runs Klarna.Payments.init & Klarna.Payments.load with provided values', () => {
       const klarnaParams = {
-        containerSelector: '#porto',
-        mounted () {
-          console.log('hello!');
-        }
+        containerSelector: '#porto'
       };
       initKlarnaForm(klarnaParams, apm, contextId);
 
@@ -315,7 +307,6 @@ describe('[checkout-com] useCkoKlarna', () => {
       /* eslint-enable */
 
       expect(klarnaMock.Payments.load.mock.calls[0][1]).toBe(apm.metadata.session);
-      expect(klarnaMock.Payments.load.mock.calls[0][2]).toBe(klarnaParams.mounted);
     });
 
   });

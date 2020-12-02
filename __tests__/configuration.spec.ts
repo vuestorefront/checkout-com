@@ -1,4 +1,4 @@
-import { defaultConfig, setup, getKlarnaOnMounted, getKlarnaContainerSelector, getPublicKey, getApiUrl, getFramesStyles, getFramesLocalization, getCkoProxyUrl, getTransactionTokenKey, getSaveInstrumentKey, getCurrentChannel, setChannel } from '../src/configuration';
+import { defaultConfig, setup, getKlarnaContainerSelector, getPublicKey, getApiUrl, getFramesStyles, getFramesLocalization, getCkoProxyUrl, getTransactionTokenKey, getSaveInstrumentKey, getCurrentChannel, setChannel } from '../src/configuration';
 
 const consoleLogMock = {
   error: jest.fn()
@@ -29,7 +29,6 @@ describe('[checkout-com] configuration', () => {
     expect(getFramesLocalization()).toEqual(defaultConfig.card.localization);
     expect(getTransactionTokenKey()).toBe(defaultConfig.tokenizedCardKey);
     expect(getCurrentChannel()).toBe(config.defaultChannel);
-    expect(getKlarnaOnMounted()).toBe(defaultConfig.klarna.mounted);
     expect(getKlarnaContainerSelector()).toBe(defaultConfig.klarna.containerSelector);
 
   });
@@ -66,7 +65,6 @@ describe('[checkout-com] configuration', () => {
     expect(getFramesLocalization()).toEqual(config.channels.en.card.localization);
     expect(getTransactionTokenKey()).toBe(config.channels.en.tokenizedCardKey);
     expect(getSaveInstrumentKey()).toBe(config.channels.en.saveInstrumentKey);
-    expect(getKlarnaOnMounted()).toBe(config.channels.en.klarna.mounted);
     expect(getKlarnaContainerSelector()).toBe(config.channels.en.klarna.containerSelector);
     expect(getCurrentChannel()).toBe(config.defaultChannel);
 
@@ -128,7 +126,6 @@ describe('[checkout-com] configuration', () => {
     expect(getFramesLocalization()).toEqual(config.channels.it.card.localization);
     expect(getTransactionTokenKey()).toBe(config.channels.it.tokenizedCardKey);
     expect(getSaveInstrumentKey()).toBe(config.channels.it.saveInstrumentKey);
-    expect(getKlarnaOnMounted()).toBe(config.channels.it.klarna.mounted);
     expect(getKlarnaContainerSelector()).toBe(config.channels.it.klarna.containerSelector);
     expect(getCurrentChannel()).toBe(newChannel);
 
