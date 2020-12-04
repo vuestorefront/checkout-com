@@ -2,15 +2,11 @@
 
 import { createContext, createPayment, getCustomerCards, removeSavedCard } from './payment';
 import { Ref, computed } from '@vue/composition-api';
-import { getPublicKey, getFramesStyles, getTransactionTokenKey, CardConfiguration, getFramesLocalization } from './configuration';
-import { CkoPaymentType, getCurrentPaymentMethodPayload, PaymentInstrument } from './helpers';
+import { getPublicKey, getFramesStyles, CardConfiguration, getFramesLocalization } from './configuration';
+import { CkoPaymentType, getCurrentPaymentMethodPayload, PaymentInstrument, getTransactionToken, removeTransactionToken, setTransactionToken } from './helpers';
 import { sharedRef } from '@vue-storefront/core';
 
 declare const Frames: any;
-
-const getTransactionToken = () => sessionStorage.getItem(getTransactionTokenKey());
-const setTransactionToken = (token) => sessionStorage.setItem(getTransactionTokenKey(), token);
-const removeTransactionToken = () => sessionStorage.removeItem(getTransactionTokenKey());
 
 const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
   const isCardValid = sharedRef(false, 'useCkoCard-isCardValid');

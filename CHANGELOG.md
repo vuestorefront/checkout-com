@@ -2,6 +2,7 @@
 
 ## 0.0.9 (not released)
 - Sofort support ([#5158](https://github.com/DivanteLtd/vue-storefront/issues/5158))
+- Klarna support ([#5157](https://github.com/DivanteLtd/vue-storefront/pull/5157))
 
 ## 0.0.8
 

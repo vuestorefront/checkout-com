@@ -7,13 +7,22 @@ const defaultConfig = {
     style: {},
     localization: null
   },
+  klarna: {
+    containerSelector: '#klarna_container'
+  },
   channels: {},
   currentChannel: null
 };
 
 const config = {
+  // TODO: Deep copy
   ...defaultConfig
 };
+
+interface KlarnaConfiguration {
+  // #klarna_container
+  containerSelector: string;
+}
 
 interface CardConfiguration {
   style?: any;
@@ -26,6 +35,7 @@ interface Configuration {
   tokenizedCardKey?: string;
   saveInstrumentKey?: string;
   card?: CardConfiguration;
+  klarna?: KlarnaConfiguration;
 }
 
 interface MultichannelConfiguration {
@@ -71,6 +81,7 @@ const setChannel = (channel: string) => {
   config.publicKey = pickedChannel.publicKey;
   config.card.style = pickedChannel.card?.style || defaultStyles;
   config.card.localization = pickedChannel.card?.localization || null;
+  config.klarna.containerSelector = pickedChannel.klarna?.containerSelector || config.klarna.containerSelector;
   config.tokenizedCardKey = pickedChannel.tokenizedCardKey || config.tokenizedCardKey;
   config.saveInstrumentKey = pickedChannel.saveInstrumentKey || config.saveInstrumentKey;
   config.ctApiUrl = pickedChannel.ctApiUrl || config.ctApiUrl;
@@ -87,12 +98,37 @@ const setup = ({ channels, defaultChannel }: MultichannelConfiguration) => {
 };
 
 const getPublicKey = () => config.publicKey;
-const getApiUrl = () => config.ctApiUrl;
-const getCkoProxyUrl = () => `${window.location.origin}/cko-api`;
-const getFramesStyles = () => config.card.style;
-const getFramesLocalization = () => config.card.localization;
-const getTransactionTokenKey = () => config.tokenizedCardKey;
-const getSaveInstrumentKey = () => config.saveInstrumentKey;
 const getCurrentChannel = () => config.currentChannel;
 
-export { defaultConfig, setChannel, setup, getPublicKey, getCurrentChannel, getApiUrl, getFramesStyles, getFramesLocalization, getCkoProxyUrl, getTransactionTokenKey, getSaveInstrumentKey, Configuration, CardConfiguration };
+// Storage Map Keys
+const getTransactionTokenKey = () => config.tokenizedCardKey;
+const getSaveInstrumentKey = () => config.saveInstrumentKey;
+
+// URLs
+const getApiUrl = () => config.ctApiUrl;
+const getCkoProxyUrl = () => `${window.location.origin}/cko-api`;
+
+// Frames
+const getFramesStyles = () => config.card.style;
+const getFramesLocalization = () => config.card.localization;
+
+// Klarna
+const getKlarnaContainerSelector = () => config.klarna.containerSelector;
+
+export {
+  defaultConfig,
+  setChannel,
+  setup,
+  getPublicKey,
+  getCurrentChannel,
+  getApiUrl,
+  getFramesStyles,
+  getFramesLocalization,
+  getCkoProxyUrl,
+  getTransactionTokenKey,
+  getSaveInstrumentKey,
+  getKlarnaContainerSelector,
+  Configuration,
+  CardConfiguration,
+  KlarnaConfiguration
+};
