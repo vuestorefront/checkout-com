@@ -35,14 +35,6 @@ describe('[checkout-com] useCkoSofort', () => {
     jest.clearAllMocks();
   });
 
-  configureContext({
-    useContext() {
-      return {
-        $sharedRefsMap: new Map()
-      }
-    }
-  })
-
   it('does not create context if provided', async () => {
 
     /*eslint-disable */
