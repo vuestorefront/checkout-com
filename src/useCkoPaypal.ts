@@ -38,6 +38,7 @@ const useCkoPaypal = () => {
         throw new Error(payment.data.error_type);
       }
 
+      error.value = null;
       return payment;
     } catch (e) {
       error.value = e;

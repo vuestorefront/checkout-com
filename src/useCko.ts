@@ -3,7 +3,7 @@
 import { createContext } from './payment';
 import { getSaveInstrumentKey, CardConfiguration, KlarnaConfiguration } from './configuration';
 import { sharedRef } from '@vue-storefront/core';
-import { computed } from '@vue/composition-api';
+import { computed, Ref } from '@vue/composition-api';
 import { CkoPaymentType } from './helpers';
 import useCkoCard from './useCkoCard';
 import useCkoPaypal from './useCkoPaypal';
@@ -34,7 +34,7 @@ const useCko = () => {
   const availableMethods = sharedRef([], 'useCko-availableMethods');
   const contextId = sharedRef<string>(null, 'useCko-contextId');
   const requiresCvv = sharedRef(false, 'useCko-requiresCvv');
-  const selectedPaymentMethod = sharedRef(CkoPaymentType.NOT_SELECTED, 'useCko-selectedPaymentMethod');
+  const selectedPaymentMethod = sharedRef<CkoPaymentType>(CkoPaymentType.NOT_SELECTED, 'useCko-selectedPaymentMethod');
 
   const {
     initCardForm,
@@ -47,7 +47,7 @@ const useCko = () => {
     removeTransactionToken,
     storedPaymentInstruments,
     submitDisabled
-  } = useCkoCard(selectedPaymentMethod);
+  } = useCkoCard(selectedPaymentMethod as any);
 
   const {
     initKlarnaForm,
@@ -144,6 +144,8 @@ const useCko = () => {
       error.value = new Error('Not supported payment method');
       return;
     }
+
+    error.value = null;
 
     const response = await finalizeTransactionFunction({
       cartId,

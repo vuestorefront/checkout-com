@@ -41,7 +41,8 @@ const useCkoKlarna = () => {
       if (![200, 202].includes(payment.status)) {
         throw new Error(payment.data.error_type);
       }
-
+      
+      error.value = null;
       return payment;
     } catch (e) {
       removeTransactionToken();
