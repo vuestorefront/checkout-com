@@ -95,6 +95,30 @@ describe('[checkout-com] useCkoKlarna', () => {
 
     });
 
+    it('calls createPayment & returns proper success response & clears error if any from previous try', async () => {
+
+      (getTransactionToken as jest.Mock).mockImplementation(() => 'abc');
+      /*eslint-disable */
+      const payload = {
+        cartId: 15,
+        contextDataId: 'abc',
+        email: 'ab@gmail.com',
+        secure3d: true,
+        savePaymentInstrument: true,
+        success_url: null,
+        failure_url: null
+      };
+      /* eslint-enable */
+
+      error.value = 'mockd';
+      const response = await makePayment(payload);
+
+      expect(createPayment).toHaveBeenCalled();
+      expect(response).toEqual(defaultPaymentResponse);
+      expect(error.value).toBe(null);
+
+    });
+
     it('uses default values for success and failure url and save_payment_instrument', async () => {
       const token = 'abc';
       (getTransactionToken as jest.Mock).mockImplementation(() => token);
