@@ -337,6 +337,27 @@ describe('[checkout-com] useCko', () => {
     expect(response).toBe(finalizeTransactionResponse);
   });
 
+  it('clears error and makes payment for credit card', async () => {
+    error.value = 'mockedValue';
+
+    /*eslint-disable */
+    const payload = {
+      cartId: '1',
+      email: 'a@gmail.com',
+      contextDataId: '12',
+      secure3d: true,
+      success_url: null,
+      failure_url: null
+    }
+
+    localStorageMock.getItem.mockImplementation(() => 'true')
+    /* eslint-enable */
+
+    await makePayment(payload);
+
+    expect(error.value).toBe(null);
+  });
+
   it('makes payment for saved card', async () => {
     selectedPaymentMethod.value = CkoPaymentType.SAVED_CARD;
     /*eslint-disable */
