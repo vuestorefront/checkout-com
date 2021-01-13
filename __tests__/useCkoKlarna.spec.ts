@@ -1,7 +1,6 @@
 import useCkoKlarna from '../src/useCkoKlarna';
 import { createPayment } from '../src/payment';
 import { getCurrentPaymentMethodPayload, getTransactionToken, setTransactionToken, CkoPaymentType } from '../src/helpers';
-import { ref } from '@vue/composition-api';
 
 const defaultPaymentResponse = {
   status: 200

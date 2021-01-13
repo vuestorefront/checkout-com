@@ -1434,14 +1434,20 @@
     semver "^7.3.2"
     tsutils "^3.17.1"
 
-"@vue-storefront/core@link:../Next/packages/core/core":
-  version "0.0.0"
-  uid ""
+"@vue-storefront/core@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/core/-/core-2.2.0.tgz#b90e0b9c38d89608daa56e47a3151ddc39beee27"
+  integrity sha512-S6R8DHs4hQ4g5ZvtoFw+bT0xSJ5pM58JXd48sPYHU2QIzDmeCCBJ4YN7uQoG8H5/mkVwHIPaygJwZoc89VDMrg==
+  dependencies:
+    "@vue/composition-api" "1.0.0-beta.21"
+    express "^4.17.1"
+    lodash-es "^4.17.15"
+    vue "^2.6.11"
 
-"@vue/composition-api@1.0.0-beta.19":
-  version "1.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.19.tgz#54355c5b6143337aafb37b022b240c90c431571c"
-  integrity sha512-FYl3DofSJAKdLO2Ig18ITelcOAWc1CWwfgMrqh7op38aqR5RfcJ7RA3kiDu38iZB0r86dMxcaOHoszIGKpU98g==
+"@vue/composition-api@1.0.0-beta.21":
+  version "1.0.0-beta.21"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.21.tgz#d5a3c68afc8b569dfc3eccd69998388bb7f6a16c"
+  integrity sha512-tgbvDpLvKQ1GrII424wsoyzPCsG0oTFf38emMq495SfLY7RmUqhVIl81pvnC5489PPrCxDkbauJHJrhlcXfbTQ==
   dependencies:
     tslib "^2.0.1"
 
