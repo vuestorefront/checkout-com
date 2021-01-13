@@ -1,8 +1,6 @@
 import useCkoSofort from '../src/useCkoSofort';
 import { createContext, createPayment } from '../src/payment';
 import { getCurrentPaymentMethodPayload, CkoPaymentType } from '../src/helpers';
-import { configureContext } from '@vue-storefront/core/src/utils';
-import { ref } from '@vue/composition-api';
 
 const defaultPaymentResponse = {
   status: 200

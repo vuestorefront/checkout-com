@@ -1,6 +1,6 @@
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 import axios from 'axios';
-import { getPublicKey, getApiUrl, getCkoProxyUrl, getCurrentChannel } from '@vue-storefront/checkout-com/src/configuration';
+import { getPublicKey, getApiUrl, getCkoProxyUrl, getCurrentChannel } from './configuration';
 import { PaymentMethodPayload } from './helpers';
 
 const createOptions = () => ({

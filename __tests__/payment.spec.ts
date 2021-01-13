@@ -10,7 +10,7 @@ jest.mock('axios', () => ({
   post: jest.fn(),
   delete: jest.fn()
 }));
-jest.mock('@vue-storefront/checkout-com/src/configuration', () => ({
+jest.mock('../src/configuration', () => ({
   getPublicKey: () => publicKey,
   getApiUrl: () => ctApiUrl,
   getCkoProxyUrl: () => ckoProxyUrl,
