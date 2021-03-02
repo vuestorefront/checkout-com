@@ -72,7 +72,10 @@ const useCko = () => {
       availableMethods.value = [
         ...response.data.apms,
         { name: 'card' }
-      ];
+      ].map(method => ({
+        ...method,
+        label: method.name[0].toUpperCase() + method.name.slice(1)
+      }))
       contextId.value = response.data.id;
       if (response.data.payment_settings && 'cvv_required' in response.data.payment_settings) {
         requiresCvv.value = response.data.payment_settings.cvv_required;
