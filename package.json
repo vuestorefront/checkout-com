@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "sideEffects": false,
   "private": true,
+  "server": "server/index.js",
   "main": "lib/index.cjs.js",
   "module": "lib/index.es.js",
   "types": "lib/index.d.ts",

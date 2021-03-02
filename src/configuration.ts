@@ -1,6 +1,6 @@
 const defaultConfig = {
-  publicKey: null,
-  ctApiUrl: 'https://play-commercetools.cko-playground.ckotech.co/api',
+  publicKey: 'pk_test_fb40649b-67e0-4bd8-bedf-8ad450d9eda0',
+  ctApiUrl: 'https://commercetools.cko-sbox.ckotech.co',
   tokenizedCardKey: 'temporary-tokenized-card',
   saveInstrumentKey: 'save-instrument',
   card: {
@@ -106,7 +106,7 @@ const getSaveInstrumentKey = () => config.saveInstrumentKey;
 
 // URLs
 const getApiUrl = () => config.ctApiUrl;
-const getCkoProxyUrl = () => `${window.location.origin}/cko-api`;
+const getCkoProxyUrl = () => `${window.location.origin}/api/cko`;
 
 // Frames
 const getFramesStyles = () => config.card.style;
@@ -130,5 +130,6 @@ export {
   getKlarnaContainerSelector,
   Configuration,
   CardConfiguration,
-  KlarnaConfiguration
+  KlarnaConfiguration,
+  MultichannelConfiguration
 };
