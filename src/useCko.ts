@@ -108,7 +108,7 @@ const useCko = () => {
     }
   };
 
-  const makePayment = async ({
+  const pay = async ({
     cartId = null,
     email = null,
     contextDataId = null,
@@ -181,7 +181,7 @@ const useCko = () => {
     initForm,
     submitCardForm,
     submitKlarnaForm: (ctx?) => submitKlarnaForm(ctx || contextId.value),
-    makePayment,
+    pay,
     setPaymentInstrument,
     setSavePaymentInstrument,
     loadSavePaymentInstrument,
