@@ -1,6 +1,6 @@
 const defaultConfig = {
-  publicKey: 'pk_test_fb40649b-67e0-4bd8-bedf-8ad450d9eda0',
-  ctApiUrl: 'https://commercetools.cko-sbox.ckotech.co',
+  publicKey: null,
+  ctApiUrl: 'https://play-commercetools.cko-playground.ckotech.co/api',
   tokenizedCardKey: 'temporary-tokenized-card',
   saveInstrumentKey: 'save-instrument',
   card: {
