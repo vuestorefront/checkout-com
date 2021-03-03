@@ -75,6 +75,8 @@ export default {
       switch (paymentMethod.name) {
         case 'paypal':
           return CkoPaymentType.PAYPAL;
+        case 'sofort':
+          return CkoPaymentType.SOFORT;
         case 'card':
           return CkoPaymentType.CREDIT_CARD;
         default:
@@ -86,7 +88,7 @@ export default {
       context.emit('status', false);
       localPaymentMethod.value = paymentMethod;
       selectedPaymentMethod.value = paymentMethodToEnumValue(paymentMethod);
-      if (selectedPaymentMethod.value === CkoPaymentType.PAYPAL) {
+      if ([CkoPaymentType.PAYPAL, CkoPaymentType.SOFORT].includes(selectedPaymentMethod.value)) {
         context.emit('status', true);
       }
     };
