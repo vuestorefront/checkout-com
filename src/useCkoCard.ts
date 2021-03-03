@@ -17,13 +17,14 @@ const useCkoCard = () => {
 
   const submitDisabled = computed(() => selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && !isCardValid.value);
   const readyToPay = computed(() => !submitDisabled.value && savedToken.value)
+  const savePaymentInstrument = sharedRef(false, 'useCko-savePaymentInstrument');
+
   const makePayment = async ({
     cartId,
     email,
     secure3d,
     cvv = null,
     contextDataId = null,
-    savePaymentInstrument = false,
     success_url = null,
     failure_url = null,
     reference = null
@@ -52,7 +53,7 @@ const useCkoCard = () => {
           cvv,
           reference,
           context_id: contextDataId || context.data.id,
-          save_payment_instrument: selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && savePaymentInstrument,
+          save_payment_instrument: selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && savePaymentInstrument.value,
           success_url: success_url || `${window.location.origin}/cko/payment-success`,
           failure_url: failure_url || `${window.location.origin}/cko/payment-error`
         })
@@ -142,7 +143,8 @@ const useCkoCard = () => {
     setPaymentInstrument,
     removeTransactionToken,
 
-    readyToPay
+    readyToPay,
+    savePaymentInstrument
   };
 };
 export default useCkoCard;

@@ -34,6 +34,7 @@ const useCko = () => {
   const availableMethods = sharedRef([], 'useCko-availableMethods');
   const contextId = sharedRef<string>(null, 'useCko-contextId');
   const requiresCvv = sharedRef(false, 'useCko-requiresCvv');
+  const savePaymentInstrument = sharedRef(false, 'useCko-savePaymentInstrument');
   const selectedPaymentMethod = sharedRef<CkoPaymentType>(CkoPaymentType.NOT_SELECTED, 'useCko-selectedPaymentMethod');
 
   const {
@@ -47,7 +48,7 @@ const useCko = () => {
     removeTransactionToken,
     storedPaymentInstruments,
     submitDisabled
-  } = useCkoCard(selectedPaymentMethod as any);
+  } = useCkoCard();
 
   const {
     initKlarnaForm,
@@ -187,7 +188,8 @@ const useCko = () => {
     loadSavePaymentInstrument,
     removePaymentInstrument,
     loadStoredPaymentInstruments,
-    removeTransactionToken
+    removeTransactionToken,
+    savePaymentInstrument
   };
 };
 export default useCko;
