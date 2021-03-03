@@ -26,18 +26,18 @@ export const createPayment = async (payload: PaymentMethodPayload) =>
 export const getCustomerCards = async ({ customer_id }) =>
   axios.post(
     `${getCkoProxyUrl()}/getStoredMethods`,
-    {
+    [{
       customer_id,
       channel: getCurrentChannel()
-    }
+    }]
   );
 
 export const removeSavedCard = async ({ customer_id, payment_instrument_id }) =>
   axios.post(
     `${getCkoProxyUrl()}/removeStoredMethod`,
-    {
+    [{
       customer_id,
       payment_instrument_id,
       channel: getCurrentChannel()
-    }
+    }]
   );

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { onMounted, watch, ref } from '@vue/composition-api';
+import { onMounted, watch } from '@vue/composition-api';
 import useCkoCard from '../useCkoCard';
 import { useUser, useCart } from '@vue-storefront/commercetools';
 import {
