@@ -8,11 +8,12 @@ import { sharedRef } from '@vue-storefront/core';
 
 declare const Frames: any;
 
-const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
+const useCkoCard = () => {
   const isCardValid = sharedRef(false, 'useCkoCard-isCardValid');
   const error = sharedRef(null, 'useCkoCard-error');
   const savedToken = sharedRef(false, 'useCkoCard-savedToken');
   const storedPaymentInstruments = sharedRef<PaymentInstrument[]>([], 'useCkoCard-storedPaymentInstruments');
+  const selectedPaymentMethod = sharedRef<CkoPaymentType>(CkoPaymentType.NOT_SELECTED, 'useCko-selectedPaymentMethod');
 
   const submitDisabled = computed(() => selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && !isCardValid.value);
   const readyToPay = computed(() => !submitDisabled.value && savedToken.value)
