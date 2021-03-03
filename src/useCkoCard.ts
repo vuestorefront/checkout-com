@@ -11,9 +11,11 @@ declare const Frames: any;
 const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
   const isCardValid = sharedRef(false, 'useCkoCard-isCardValid');
   const error = sharedRef(null, 'useCkoCard-error');
+  const savedToken = sharedRef(false, 'useCkoCard-savedToken');
   const storedPaymentInstruments = sharedRef<PaymentInstrument[]>([], 'useCkoCard-storedPaymentInstruments');
 
   const submitDisabled = computed(() => selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && !isCardValid.value);
+  const readyToPay = computed(() => !submitDisabled.value && savedToken.value)
   const makePayment = async ({
     cartId,
     email,
@@ -79,9 +81,14 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
       ...(localization ? { localization } : {}),
       cardValidationChanged: () => {
         isCardValid.value = Frames.isCardValid();
+        savedToken.value = false;
+        if (isCardValid.value) {
+          submitForm();
+        }
       },
       cardTokenized: async ({ token }) => {
         setTransactionToken(token);
+        savedToken.value = true;
       },
       cardTokenizationFailed: (data) => {
         error.value = data;
@@ -116,6 +123,7 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
 
   const setPaymentInstrument = (token: string) => {
     setTransactionToken(token);
+    savedToken.value = true;
     selectedPaymentMethod.value = CkoPaymentType.SAVED_CARD;
   };
 
@@ -131,7 +139,9 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
     loadStoredPaymentInstruments,
     removePaymentInstrument,
     setPaymentInstrument,
-    removeTransactionToken
+    removeTransactionToken,
+
+    readyToPay
   };
 };
 export default useCkoCard;

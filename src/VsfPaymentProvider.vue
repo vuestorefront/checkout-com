@@ -33,7 +33,10 @@
         </div>
     </div>
     <div class="payment-sdk">
-
+      <CreditCard 
+        v-if="selectedPaymentMethod === CkoPaymentType.CREDIT_CARD"
+        @ready="$emit('status', $event)"
+      />
     </div>
   </div>
 </template>
@@ -55,10 +58,15 @@ export default {
   components: {
     SfHeading,
     SfButton,
-    SfRadio
+    SfRadio,
+    CreditCard: () => import('./methods/CreditCard')
   },
-  setup (props, context) {
-    const { loadAvailableMethods, availableMethods: paymentMethods, selectedPaymentMethod } = useCko();
+  setup (_, context) {
+    const {
+      loadAvailableMethods,
+      availableMethods: paymentMethods,
+      selectedPaymentMethod
+    } = useCko();
     const { cart } = useCart();
     const { user } = useUser();
     const localPaymentMethod = ref({});
@@ -75,6 +83,7 @@ export default {
     }
 
     const selectPaymentMethod = paymentMethod => {
+      context.emit('status', false);
       localPaymentMethod.value = paymentMethod;
       selectedPaymentMethod.value = paymentMethodToEnumValue(paymentMethod);
       if (selectedPaymentMethod.value === CkoPaymentType.PAYPAL) {
@@ -91,7 +100,9 @@ export default {
       paymentMethodToEnumValue,
       selectedPaymentMethod,
       localPaymentMethod,
-      selectPaymentMethod
+      selectPaymentMethod,
+
+      CkoPaymentType
     };
   }
 };
