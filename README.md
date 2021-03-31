@@ -373,10 +373,18 @@ E.g:
 ['@vue-storefront/checkout-com/nuxt', {
     // ...
     klarna: {
-        containerSelector: '#my-klarna-div'
+        containerSelector: '#my-klarna-div',
+        beforeLoad ({ apm, options, data }) {
+            return {
+                options,
+                data
+            }
+        }
     }
 }]
 ```
+
+`beforeLoad` - hook that allows you to modify `options` and `data` (first and second argument) used to call [Klarna.Payments.load](https://developers.klarna.com/documentation/klarna-payments/javascript-sdk/#load)
 
 ## Fetching available payment methods
 At first, you have to save billing address in your backend to do that. You can do it just after `setBillingDetails` call from `Creadit card component` step. Then you can easily use `loadAvailableMethods` method. It requires reference as the first argument - which is cartId. E.g:
