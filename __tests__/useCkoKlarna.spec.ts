@@ -315,6 +315,20 @@ describe('[checkout-com] useCkoKlarna', () => {
       expect(klarnaMock.Payments.load.mock.calls[0][1]).toBe(apm.metadata.session);
     });
 
+    it('initCardForm uses beforeLoad', () => {
+      const klarnaParams = {
+        containerSelector: '#porto',
+        beforeLoad: jest.fn(() => ({
+          options: 1,
+          data: 2
+        }))
+      };
+      initKlarnaForm(klarnaParams, apm, contextId);
+
+      expect(klarnaMock.Payments.load.mock.calls[0][0]).toBe(1);
+      expect(klarnaMock.Payments.load.mock.calls[0][1]).toBe(2);
+    });
+
   });
 
 });
