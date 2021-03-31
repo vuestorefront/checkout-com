@@ -73,14 +73,25 @@ const useCkoKlarna = () => {
       client_token: apm.metadata.details.client_token
     });
 
-    Klarna.Payments.load(
-      {
+    const defaults = {
+      options: {
         container: klarnaParams?.containerSelector || getKlarnaContainerSelector(),
         payment_method_categories: apm.metadata.details.payment_method_category.map(cat => cat.identifier),
         instance_id: contextId
       },
-      apm.metadata.session
+      data: apm.metadata.session
+    };
+
+    const { options, data } = klarnaParams?.beforeLoad 
+      ? klarnaParams.beforeLoad({ apm, ...defaults }) 
+      : defaults;
+
+    Klarna.Payments.load(
+      options,
+      data
     );
+
+    console.log(options, data)
   };
 
   return {
