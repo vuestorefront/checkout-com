@@ -90,8 +90,6 @@ const useCkoKlarna = () => {
       options,
       data
     );
-
-    console.log(options, data)
   };
 
   return {
