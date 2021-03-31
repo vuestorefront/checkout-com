@@ -51,10 +51,6 @@
     "typescript": "^3.6.4",
     "vue-eslint-parser": "^7.0.0"
   },
-  "peerDependencies": {
-    "@vue/composition-api": "*",
-    "vue": "*"
-  },
   "files": [
     "lib/**/*",
     "nuxt/**/*"
