@@ -22,6 +22,7 @@ const config = {
 interface KlarnaConfiguration {
   // #klarna_container
   containerSelector: string;
+  beforeLoad?: (cfg: { apm, options, data }) => { options, data }
 }
 
 interface CardConfiguration {
