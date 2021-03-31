@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.1 
+- beforeLoad` hook for Klarna ([#5706](https://github.com/vuestorefront/vue-storefront/issues/5706))
+
 ## 0.0.9 (not released)
 - Sofort support ([#5158](https://github.com/DivanteLtd/vue-storefront/issues/5158))
 - Klarna support ([#5157](https://github.com/DivanteLtd/vue-storefront/pull/5157))
