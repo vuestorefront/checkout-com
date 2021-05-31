@@ -116,7 +116,6 @@ const useCko = () => {
     reference = null,
     capture = true
   } = {}) => {
-    console.log('%c 🥠 yo yo yo: ', 'font-size:12px;background-color: #ED9EC7;color:#fff;');
     if (!selectedPaymentMethod.value) {
       error.value = new Error('Payment method not selected');
       return;
