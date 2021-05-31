@@ -16,7 +16,8 @@ const useCkoKlarna = () => {
     savePaymentInstrument,
     reference = null,
     success_url = null,
-    failure_url = null
+    failure_url = null,
+    capture = true
   }) => {
     try {
       const token = getTransactionToken();
@@ -33,7 +34,8 @@ const useCkoKlarna = () => {
           reference,
           save_payment_instrument: savePaymentInstrument,
           success_url: success_url || `${window.location.origin}/cko/payment-success`,
-          failure_url: failure_url || `${window.location.origin}/cko/payment-error`
+          failure_url: failure_url || `${window.location.origin}/cko/payment-error`,
+          capture
         })
       );
 

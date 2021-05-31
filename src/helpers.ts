@@ -10,6 +10,7 @@ interface PaymentPropeties {
     failure_url?: string,
     token?: string,
     reference?: string;
+    capture?: boolean
 }
 
 interface PaymentMethodPayload extends PaymentPropeties {

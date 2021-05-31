@@ -113,8 +113,10 @@ const useCko = () => {
     failure_url = null,
     secure3d = true,
     cvv = null,
-    reference = null
+    reference = null,
+    capture = true
   } = {}) => {
+    console.log('%c 🥠 yo yo yo: ', 'font-size:12px;background-color: #ED9EC7;color:#fff;');
     if (!selectedPaymentMethod.value) {
       error.value = new Error('Payment method not selected');
       return;
@@ -156,7 +158,8 @@ const useCko = () => {
       cvv,
       reference,
       contextDataId: contextDataId || contextId.value,
-      savePaymentInstrument: loadSavePaymentInstrument()
+      savePaymentInstrument: loadSavePaymentInstrument(),
+      capture
     });
 
     if (localError.value) {

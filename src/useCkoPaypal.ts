@@ -15,7 +15,8 @@ const useCkoPaypal = () => {
     savePaymentInstrument = false,
     success_url = null,
     failure_url = null,
-    reference = null
+    reference = null,
+    capture = true
   }) => {
     try {
       let context;
@@ -30,7 +31,8 @@ const useCkoPaypal = () => {
           context_id: contextDataId || context.data.id,
           save_payment_instrument: savePaymentInstrument,
           success_url: success_url || `${window.location.origin}/cko/payment-success`,
-          failure_url: failure_url || `${window.location.origin}/cko/payment-error`
+          failure_url: failure_url || `${window.location.origin}/cko/payment-error`,
+          capture
         })
       );
 
