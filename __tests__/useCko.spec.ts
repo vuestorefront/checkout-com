@@ -327,7 +327,8 @@ describe('[checkout-com] useCko', () => {
       success_url: null,
       failure_url: null,
       savePaymentInstrument: true,
-      reference: null
+      reference: null,
+      capture: true
     }
     /* eslint-enable */
 
@@ -369,7 +370,8 @@ describe('[checkout-com] useCko', () => {
       secure3d: true,
       success_url: null,
       failure_url: null,
-      reference: 'zyxxzxz'
+      reference: 'zyxxzxz',
+      capture: false
     }
 
     localStorageMock.getItem.mockImplementation(() => 'true')
@@ -383,7 +385,8 @@ describe('[checkout-com] useCko', () => {
       success_url: null,
       failure_url: null,
       savePaymentInstrument: true,
-      reference: 'zyxxzxz'
+      reference: 'zyxxzxz',
+      capture: false
     }
     /* eslint-enable */
 
@@ -436,7 +439,8 @@ describe('[checkout-com] useCko', () => {
       success_url: null,
       failure_url: null,
       savePaymentInstrument: true,
-      reference: null
+      reference: null,
+      capture: true
     }
     /* eslint-enable */
 
@@ -469,7 +473,8 @@ describe('[checkout-com] useCko', () => {
       success_url: null,
       failure_url: null,
       savePaymentInstrument: true,
-      reference: null
+      reference: null,
+      capture: true
     }
     /* eslint-enable */
 
@@ -502,7 +507,8 @@ describe('[checkout-com] useCko', () => {
       success_url: null,
       failure_url: null,
       savePaymentInstrument: true,
-      reference: null
+      reference: null,
+      capture: true
     }
     /* eslint-enable */
 

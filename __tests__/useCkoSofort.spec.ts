@@ -127,7 +127,8 @@ describe('[checkout-com] useCkoSofort', () => {
       context_id: payload.contextDataId,
       success_url: `${window.location.origin}/cko/payment-success`,
       failure_url: `${window.location.origin}/cko/payment-error`,
-      reference: 'zyxxzxz'
+      reference: 'zyxxzxz',
+      capture: true
     }
     /* eslint-enable */
 
@@ -153,7 +154,8 @@ describe('[checkout-com] useCkoSofort', () => {
       context_id: payload.contextDataId,
       success_url: payload.success_url,
       failure_url: payload.failure_url,
-      reference: null
+      reference: null,
+      capture: true
     }
     /* eslint-enable */
 

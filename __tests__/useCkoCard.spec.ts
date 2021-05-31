@@ -224,7 +224,8 @@ describe('[checkout-com] useCkoCard', () => {
         save_payment_instrument: false,
         success_url: `${window.location.origin}/cko/payment-success`,
         failure_url: `${window.location.origin}/cko/payment-error`,
-        reference: null
+        reference: null,
+        capture: true
       }
       /* eslint-enable */
 
@@ -248,7 +249,8 @@ describe('[checkout-com] useCkoCard', () => {
         success_url: 'aa',
         failure_url: 'bb',
         reference: 'zyxxzxz',
-        token
+        token,
+        capture: true
       };
   
       const expectedObject = {
@@ -259,7 +261,8 @@ describe('[checkout-com] useCkoCard', () => {
         success_url: payload.success_url,
         failure_url: payload.failure_url,
         reference: 'zyxxzxz',
-        token
+        token,
+        capture: true
       }
       /* eslint-enable */
 
