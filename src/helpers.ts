@@ -6,6 +6,7 @@ interface PaymentPropeties {
     cvv?: number,
     save_payment_instrument?: boolean,
     secure3d?: boolean,
+    attempt_n3d?: boolean,
     success_url?: string,
     failure_url?: string,
     token?: string,
@@ -49,15 +50,22 @@ enum CkoPaymentType {
     SOFORT
 }
 
-const buildBasePaymentMethodPayload = ({ context_id, save_payment_instrument, secure3d, success_url, failure_url, cvv, reference }: PaymentPropeties) => ({
-    context_id,
-    ...(cvv ? { cvv } : {}),
-    ...(save_payment_instrument ? { save_payment_instrument } : {}),
-    ...(secure3d ? { '3ds': secure3d } : {}),
-    ...(success_url ? { success_url } : {}),
-    ...(failure_url ? { failure_url } : {}),
-    ...(reference ? { reference } : {})
-})
+const buildBasePaymentMethodPayload = ({ context_id, save_payment_instrument, secure3d, attempt_n3d, success_url, failure_url, cvv, reference }: PaymentPropeties) => {
+    const threeDs = {
+        ...(secure3d ? { 'enabled': secure3d } : {}),
+        ...(attempt_n3d ? { attempt_n3d } : {}),
+    };
+
+    return {
+        context_id,
+        ...(cvv ? { cvv } : {}),
+        ...(save_payment_instrument ? { save_payment_instrument } : {}),
+        ...(Object.keys(threeDs).length !== 0 ? { '3ds': { ...threeDs } } : {}),
+        ...(success_url ? { success_url } : {}),
+        ...(failure_url ? { failure_url } : {}),
+        ...(reference ? { reference } : {})
+    };
+};
 
 const buildPaymentPayloadStrategies = {
     [CkoPaymentType.CREDIT_CARD]: (properties: PaymentPropeties): PaymentMethodPayload => ({
@@ -91,7 +99,7 @@ const getTransactionToken = () => sessionStorage.getItem(getTransactionTokenKey(
 const setTransactionToken = (token) => sessionStorage.setItem(getTransactionTokenKey(), token);
 const removeTransactionToken = () => sessionStorage.removeItem(getTransactionTokenKey());
 
-export { 
+export {
   CkoPaymentType,
   PaymentPropeties,
   PaymentMethodPayload,

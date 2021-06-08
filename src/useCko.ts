@@ -89,7 +89,7 @@ const useCko = () => {
       return;
     }
     const hasSpecifiedMethods = initMethods && Object.keys(initMethods).length > 0;
-    
+
     for (const currentPaymentMethod of availableMethods.value) {
       if (!hasSpecifiedMethods || initMethods[currentPaymentMethod.name]) {
         const methodConfig = config[currentPaymentMethod.name];
@@ -112,6 +112,7 @@ const useCko = () => {
     success_url = null,
     failure_url = null,
     secure3d = true,
+    attempt_n3d = false,
     cvv = null,
     reference = null
   } = {}) => {
@@ -153,6 +154,7 @@ const useCko = () => {
       success_url,
       failure_url,
       secure3d,
+      attempt_n3d,
       cvv,
       reference,
       contextDataId: contextDataId || contextId.value,

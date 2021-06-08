@@ -59,6 +59,7 @@ describe('[checkout-com] helpers', () => {
       context_id: '123',
       save_payment_instrument: false,
       secure3d: true,
+      attempt_n3d: true,
       success_url: 'aa',
       failure_url: 'bb',
       token: 'super-token'
@@ -66,7 +67,7 @@ describe('[checkout-com] helpers', () => {
 
     const expectedPayload = {
       context_id: '123',
-      '3ds': true,
+      '3ds': { enabled: true, attempt_n3d: true },
       success_url: 'aa',
       failure_url: 'bb',
       token: 'super-token',
@@ -97,7 +98,7 @@ describe('[checkout-com] helpers', () => {
       context_id: '123',
       save_payment_instrument: true,
       cvv: 1234,
-      '3ds': true,
+      '3ds': { enabled: true },
       success_url: 'aa',
       failure_url: 'bb',
       token: 'super-token',
@@ -125,7 +126,7 @@ describe('[checkout-com] helpers', () => {
 
     const expectedPayload = {
       context_id: '123',
-      '3ds': true,
+      '3ds': { enabled: true },
       success_url: 'aa',
       failure_url: 'bb',
       token: 'super-token',
@@ -153,7 +154,7 @@ describe('[checkout-com] helpers', () => {
 
     const expectedPayload = {
       context_id: '123',
-      '3ds': true,
+      '3ds': { enabled: true },
       success_url: 'aa',
       failure_url: 'bb',
       type: 'paypal',
@@ -181,7 +182,7 @@ describe('[checkout-com] helpers', () => {
 
     const expectedPayload = {
       context_id: '123',
-      '3ds': true,
+      '3ds': { enabled: true },
       success_url: 'aa',
       failure_url: 'bb',
       type: 'sofort',
@@ -202,6 +203,7 @@ describe('[checkout-com] helpers', () => {
       context_id: '123',
       save_payment_instrument: false,
       secure3d: false,
+      attempt_n3d: false,
       success_url: '',
       failure_url: ''
     };
