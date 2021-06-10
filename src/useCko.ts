@@ -66,9 +66,9 @@ const useCko = () => {
     error: sofortError
   } = useCkoSofort();
 
-  const loadAvailableMethods = async (reference, email?) => {
+  const loadAvailableMethods = async (reference, email?, products?) => {
     try {
-      const response = await createContext({ reference, email });
+      const response = await createContext({ reference, email, products });
       availableMethods.value = [
         ...response.data.apms,
         { name: 'card' }
