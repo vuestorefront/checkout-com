@@ -476,7 +476,7 @@ const payment = await makePayment({ cartId: cart.value.id, email: user.value && 
 You might wonder how you could learn whether you have to provide CVV for saved card or not. For that, I shared `isCvvRequired` computed boolean in `useCko`. It's value bases on `loadAvailableMethods` response. So you have to call this method before. If you didn't provide `cvv` to `makePayment` and it requires it - then it will throw an error.
 
 ## Downgrade payments to non-3DS
-There are banks (especially in US) which do not support any version of 3DS standard. You can instruct the `makePayment` method to attempt non-3DS payment in case customer's card is not enrolled for 3DS using `attempt_n3d` parameter. Visit [checkout.com](https://docs.checkout.com/risk-management/3d-secure/3d-secure-2-api-integration) docs for more details.
+There are banks (especially in US) which do not support any version of 3DS standard. You can instruct the `makePayment` method to attempt non-3DS payment in case customer's card is not enrolled for 3DS using `attempt_n3d` parameter. Visit [checkout.com](https://docs.checkout.com/risk-management/3d-secure/3d-secure-2-api-integration) docs for more details. Please note: if you downgrade the payment to non-3DS, the liability shift advantage of 3DS2 will not apply, meaning you will not be protected against potentially fraudulent payments or chargebacks.
 
 ```ts
 const payment = await makePayment({ cartId: cart.value.id, cvv: 1234, attempt_n3d: true });
