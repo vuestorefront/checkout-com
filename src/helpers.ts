@@ -52,7 +52,7 @@ enum CkoPaymentType {
 
 const buildBasePaymentMethodPayload = ({ context_id, save_payment_instrument, secure3d, attempt_n3d, success_url, failure_url, cvv, reference }: PaymentPropeties) => {
     const threeDs = {
-        ...(secure3d ? { 'enabled': secure3d } : {}),
+        ...(secure3d ? { enabled: secure3d } : {}),
         ...(attempt_n3d ? { attempt_n3d } : {}),
     };
 
