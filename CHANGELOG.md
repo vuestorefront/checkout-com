@@ -1,7 +1,10 @@
 # Changelog
 
-## 0.1.1 
-- beforeLoad` hook for Klarna ([#5706](https://github.com/vuestorefront/vue-storefront/issues/5706))
+## 0.1.2
+- `attempt_n3d` parameter for makePayment method ([#16](https://github.com/vuestorefront/checkout-com/issues/16))
+
+## 0.1.1
+- `beforeLoad` hook for Klarna ([#5706](https://github.com/vuestorefront/vue-storefront/issues/5706))
 
 ## 0.0.9 (not released)
 - Sofort support ([#5158](https://github.com/DivanteLtd/vue-storefront/issues/5158))
@@ -19,6 +22,6 @@
 - Possible to add `cvv` to `makePayment` method for saved cards ([#4893](https://github.com/DivanteLtd/vue-storefront/issues/4893))
 - `reference` attribute in `makePayment` method ([#5003](https://github.com/DivanteLtd/vue-storefront/issues/5003))
 
-## 0.0.6 
+## 0.0.6
 
-- Support for channels ([#4885](https://github.com/DivanteLtd/vue-storefront/issues/4885)) 
+- Support for channels ([#4885](https://github.com/DivanteLtd/vue-storefront/issues/4885))

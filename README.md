@@ -37,7 +37,7 @@ If you are Developing Core of Vue Storefront Next you might need to add `@vue-st
 }],
 ```
 `defaultChannel` is the channel which will be chosen by default. Value should be keyname from `channels`
-`channels` allows us to define many variants of attributes. Developer is able to change them just by calling `setChannel` 
+`channels` allows us to define many variants of attributes. Developer is able to change them just by calling `setChannel`
 `publicKey` and `secretKey` comes from Checkout COM
 `ctApiUrl` is base URL to the CT CKO API - do not put slash at the end!
 
@@ -122,7 +122,7 @@ onMounted(async () => {
     await loadAvailableMethods(cart.value.id, user.value && user.value.email);
 })
 ```
-5. Execute `initForm`. It mounts different payment handlers depends on arguments (check details below). If you are calling it after load component - **use `onMounted` to make sure DOM Element where it should be mounted already exists**.   
+5. Execute `initForm`. It mounts different payment handlers depends on arguments (check details below). If you are calling it after load component - **use `onMounted` to make sure DOM Element where it should be mounted already exists**.
 
 - Card's Frames will be mounted in DOM element with class `card-frame`.
 - PayPal & Sofort does not need any SDK, we just redirect to their's website like in 3DS redirection process for credit cards. So if you are interested only in this payment method you could omit this step.
@@ -242,7 +242,7 @@ export default {
 It is important to set proper CKO's Payment Method in `useCko` instance so it will be able to figure out proper payload to send in `makePayment`. To do that:
 ```js
 import { useCko, CkoPaymentType } from '@vue-storefront/checkout-com'
- 
+
 // ...
 
 const {
@@ -474,3 +474,10 @@ const payment = await makePayment({ cartId: cart.value.id, email: user.value && 
 ```
 
 You might wonder how you could learn whether you have to provide CVV for saved card or not. For that, I shared `isCvvRequired` computed boolean in `useCko`. It's value bases on `loadAvailableMethods` response. So you have to call this method before. If you didn't provide `cvv` to `makePayment` and it requires it - then it will throw an error.
+
+## Downgrade payments to non-3DS
+There are banks (especially in US) which do not support any version of 3DS standard. You can instruct the `makePayment` method to attempt non-3DS payment in case customer's card is not enrolled for 3DS using `attempt_n3d` parameter. Visit [checkout.com](https://docs.checkout.com/risk-management/3d-secure/3d-secure-2-api-integration) docs for more details. Please note: if you downgrade the payment to non-3DS, the liability shift advantage of 3DS2 will not apply, meaning you will not be protected against potentially fraudulent payments or chargebacks.
+
+```ts
+const payment = await makePayment({ cartId: cart.value.id, cvv: 1234, attempt_n3d: true });
+```

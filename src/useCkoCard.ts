@@ -18,6 +18,7 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
     cartId,
     email,
     secure3d,
+    attempt_n3d,
     cvv = null,
     contextDataId = null,
     savePaymentInstrument = false,
@@ -46,6 +47,7 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
         getCurrentPaymentMethodPayload(selectedPaymentMethod.value, {
           token,
           secure3d,
+          attempt_n3d,
           cvv,
           reference,
           context_id: contextDataId || context.data.id,
