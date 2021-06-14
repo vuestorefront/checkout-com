@@ -116,10 +116,31 @@ if (isAuthenticated.value && cart.value && cart.value.customerId) {
     await loadStoredPaymentInstruments(cart.value.customerId);
 }
 ```
-4. Run `loadAvailableMethods` - first argument is cartId (access it via `cart.value.id`) - second for authenticated customer is an email (access it via `user.value.email`). Then it will return `interface { id, apms: Array<any> }` and set `apms` inside `availableMethods`. E.g:
+4. Run `loadAvailableMethods` - first argument is cartId (access it via `cart.value.id`) - second for authenticated customer is an email (access it via `user.value.email`) - third for products, you can modify order products items. Then it will return `interface { id, apms: Array<any> }` and set `apms` inside `availableMethods`. E.g:
 ```js
 onMounted(async () => {
     await loadAvailableMethods(cart.value.id, user.value && user.value.email);
+})
+
+// You can modify products in order only on creation of context which init on call loadAvailableMethods (example: edit order for Klarna);
+onMounted(async () => {
+    const products = [
+        {
+            id: "dbe4f68c",
+            name: "Product name",
+            quantity: 2,
+            price: 799,
+            tax_amount: 220,
+            type: "digital", // type?: "discount" | "gift_card"  | "physical" | "sales_tax" | "digital" | "shipping_fee" | "store_credit" | "surcharge";
+            metadata: {
+                tax_rate: 1600,
+                reference: "ref",
+                image_url: "",
+                product_url: ""
+            }
+        }
+    ];
+    await loadAvailableMethods(cart.value.id, user.value && user.value.email, products);
 })
 ```
 5. Execute `initForm`. It mounts different payment handlers depends on arguments (check details below). If you are calling it after load component - **use `onMounted` to make sure DOM Element where it should be mounted already exists**.
@@ -382,6 +403,30 @@ E.g:
         }
     }
 }]
+```
+Also you can modify merchant_reference1 and customer phone on call initForm. For example: 
+```js
+const {
+    initForm,
+    availableMethods
+} = useCko();
+
+onMounted(async () => {
+    // Firstly we have to create context by calling loadAvailableMethods
+    await loadAvailableMethods(cart.value.id, user.value && user.value.email);
+
+    initForm({ klarna: true },
+      {
+        klarna: {
+          beforeLoad({ options, data }) {
+            data.merchant_reference1 = cart.value?.custom?.merchant_reference; // order reference
+            data.billing_address.phone = billingDetails.value.phone; // phone number of customer
+            return { options, data };
+          }
+        }
+      }
+    );
+})
 ```
 
 `beforeLoad` - hook that allows you to modify `options` and `data` (first and second argument) used to call [Klarna.Payments.load](https://developers.klarna.com/documentation/klarna-payments/javascript-sdk/#load)
