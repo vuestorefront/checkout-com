@@ -67,7 +67,8 @@ describe('[checkout-com] useCkoCard', () => {
       await makePayment({
         cartId: '1',
         email: 'johny@gmail.com',
-        secure3d: true
+        secure3d: true,
+        attempt_n3d: false
       });
 
       expect(error.value.message).toBe('There is no payment token');
@@ -84,7 +85,8 @@ describe('[checkout-com] useCkoCard', () => {
         contextDataId: 'provided-id',
         savePaymentInstrument: true,
         success_url: null,
-        failure_url: null
+        failure_url: null,
+        attempt_n3d: false
       };
       /* eslint-enable */
 
@@ -104,7 +106,8 @@ describe('[checkout-com] useCkoCard', () => {
         secure3d: true,
         savePaymentInstrument: true,
         success_url: null,
-        failure_url: null
+        failure_url: null,
+        attempt_n3d: false
       };
       /* eslint-enable */
 
@@ -147,7 +150,8 @@ describe('[checkout-com] useCkoCard', () => {
         secure3d: true,
         savePaymentInstrument: true,
         success_url: null,
-        failure_url: null
+        failure_url: null,
+        attempt_n3d: false
       };
       /* eslint-enable */
 
@@ -167,7 +171,8 @@ describe('[checkout-com] useCkoCard', () => {
         secure3d: true,
         savePaymentInstrument: true,
         success_url: null,
-        failure_url: null
+        failure_url: null,
+        attempt_n3d: false
       };
       /* eslint-enable */
 
@@ -189,7 +194,8 @@ describe('[checkout-com] useCkoCard', () => {
         secure3d: true,
         savePaymentInstrument: true,
         success_url: null,
-        failure_url: null
+        failure_url: null,
+        attempt_n3d: false
       };
       /* eslint-enable */
 
@@ -213,7 +219,8 @@ describe('[checkout-com] useCkoCard', () => {
         cvv: 999,
         contextDataId: 'abc',
         email: 'ab@gmail.com',
-        secure3d: true
+        secure3d: true,
+        attempt_n3d: false
       };
   
       const exptectedObject = {
@@ -224,7 +231,8 @@ describe('[checkout-com] useCkoCard', () => {
         save_payment_instrument: false,
         success_url: `${window.location.origin}/cko/payment-success`,
         failure_url: `${window.location.origin}/cko/payment-error`,
-        reference: null
+        reference: null,
+        attempt_n3d: false
       }
       /* eslint-enable */
 
@@ -248,7 +256,8 @@ describe('[checkout-com] useCkoCard', () => {
         success_url: 'aa',
         failure_url: 'bb',
         reference: 'zyxxzxz',
-        token
+        token,
+        attempt_n3d: false
       };
   
       const expectedObject = {
@@ -259,7 +268,8 @@ describe('[checkout-com] useCkoCard', () => {
         success_url: payload.success_url,
         failure_url: payload.failure_url,
         reference: 'zyxxzxz',
-        token
+        token,
+        attempt_n3d: false
       }
       /* eslint-enable */
 
@@ -280,7 +290,8 @@ describe('[checkout-com] useCkoCard', () => {
         secure3d: true,
         savePaymentInstrument: true,
         success_url: null,
-        failure_url: null
+        failure_url: null,
+        attempt_n3d: false
       };
   
       const errorValue = 'Some error';
