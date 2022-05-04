@@ -1,6 +1,6 @@
-import { setup, getPublicKey, getApiUrl, getFramesStyles, setChannel } from './configuration';
+import { setup, getPublicKey, getApiUrl, getFramesStyles, setChannel, getCurrentChannel, isSCAenabled } from './configuration';
 import useCko from './useCko';
-import { CkoPaymentType } from './helpers';
+import { CkoPaymentType, CkoChallengeIndicatorType } from './helpers';
 
-export { setup, getPublicKey, getApiUrl, getFramesStyles, useCko, setChannel, CkoPaymentType };
+export { setup, getPublicKey, getApiUrl, getFramesStyles, useCko, setChannel, getCurrentChannel, isSCAenabled, CkoPaymentType, CkoChallengeIndicatorType };
 
