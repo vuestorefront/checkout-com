@@ -27,6 +27,7 @@ jest.mock('../src/helpers', () => ({
 }));
 jest.mock('../src/configuration', () => ({
   getPublicKey: jest.fn(),
+  isSCAenabled: jest.fn(),
   getFramesStyles: jest.fn(),
   getTransactionTokenKey: jest.fn(),
   getFramesLocalization: jest.fn(),
@@ -232,7 +233,8 @@ describe('[checkout-com] useCkoCard', () => {
         success_url: `${window.location.origin}/cko/payment-success`,
         failure_url: `${window.location.origin}/cko/payment-error`,
         reference: null,
-        attempt_n3d: false
+        attempt_n3d: false,
+        challenge_indicator3d: null
       }
       /* eslint-enable */
 
@@ -269,7 +271,8 @@ describe('[checkout-com] useCkoCard', () => {
         failure_url: payload.failure_url,
         reference: 'zyxxzxz',
         token,
-        attempt_n3d: false
+        attempt_n3d: false,
+        challenge_indicator3d: null
       }
       /* eslint-enable */
 

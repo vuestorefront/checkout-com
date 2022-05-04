@@ -2,8 +2,8 @@
 
 import { createContext, createPayment, getCustomerCards, removeSavedCard } from './payment';
 import { Ref, computed } from '@vue/composition-api';
-import { getPublicKey, getFramesStyles, CardConfiguration, getFramesLocalization } from './configuration';
-import { CkoPaymentType, getCurrentPaymentMethodPayload, PaymentInstrument, getTransactionToken, removeTransactionToken, setTransactionToken } from './helpers';
+import { getPublicKey, getFramesStyles, CardConfiguration, getFramesLocalization, isSCAenabled } from './configuration';
+import { CkoPaymentType, getCurrentPaymentMethodPayload, PaymentInstrument, getTransactionToken, removeTransactionToken, setTransactionToken, CkoChallengeIndicatorType } from './helpers';
 import { sharedRef } from '@vue-storefront/core';
 
 declare const Frames: any;
@@ -43,6 +43,9 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
         }
       }
 
+      const isSavePaymentInstrument = selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && savePaymentInstrument;
+      const challengeIdicator3d = isSCAenabled() && isSavePaymentInstrument ? CkoChallengeIndicatorType.CHALLENGE_REQUESTED_MANDATE : null;
+
       const payment = await createPayment(
         getCurrentPaymentMethodPayload(selectedPaymentMethod.value, {
           token,
@@ -51,7 +54,8 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
           cvv,
           reference,
           context_id: contextDataId || context.data.id,
-          save_payment_instrument: selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && savePaymentInstrument,
+          save_payment_instrument: isSavePaymentInstrument,
+          challenge_indicator3d: challengeIdicator3d,
           success_url: success_url || `${window.location.origin}/cko/payment-success`,
           failure_url: failure_url || `${window.location.origin}/cko/payment-error`
         })

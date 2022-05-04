@@ -11,7 +11,8 @@ const defaultConfig = {
     containerSelector: '#klarna_container'
   },
   channels: {},
-  currentChannel: null
+  currentChannel: null,
+  ckoSCAenabled: false
 };
 
 const config = {
@@ -87,6 +88,7 @@ const setChannel = (channel: string) => {
   config.saveInstrumentKey = pickedChannel.saveInstrumentKey || config.saveInstrumentKey;
   config.ctApiUrl = pickedChannel.ctApiUrl || config.ctApiUrl;
   config.currentChannel = channel;
+  config.ckoSCAenabled = pickedChannel.ckoSCAenabled || config.ckoSCAenabled;
 };
 
 const setup = ({ channels, defaultChannel }: MultichannelConfiguration) => {
@@ -100,6 +102,7 @@ const setup = ({ channels, defaultChannel }: MultichannelConfiguration) => {
 
 const getPublicKey = () => config.publicKey;
 const getCurrentChannel = () => config.currentChannel;
+const isSCAenabled = () => config.ckoSCAenabled;
 
 // Storage Map Keys
 const getTransactionTokenKey = () => config.tokenizedCardKey;
@@ -122,6 +125,7 @@ export {
   setup,
   getPublicKey,
   getCurrentChannel,
+  isSCAenabled,
   getApiUrl,
   getFramesStyles,
   getFramesLocalization,
