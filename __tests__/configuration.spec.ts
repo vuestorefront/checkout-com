@@ -1,4 +1,4 @@
-import { defaultConfig, setup, getKlarnaContainerSelector, getPublicKey, getApiUrl, getFramesStyles, getFramesLocalization, getCkoProxyUrl, getTransactionTokenKey, getSaveInstrumentKey, getCurrentChannel, setChannel } from '../src/configuration';
+import { defaultConfig, setup, getKlarnaContainerSelector, getPublicKey, getApiUrl, getFramesStyles, getFramesLocalization, getCkoProxyUrl, getTransactionTokenKey, getSaveInstrumentKey, getCurrentChannel, setChannel, isSCAenabled } from '../src/configuration';
 
 const consoleLogMock = {
   error: jest.fn()
@@ -51,7 +51,8 @@ describe('[checkout-com] configuration', () => {
             }
           },
           tokenizedCardKey: 'temporary-tokenized-value-key',
-          saveInstrumentKey: 'some-new-value'
+          saveInstrumentKey: 'some-new-value',
+          ckoSCAenabled: false
         }
       },
       defaultChannel: 'en'
@@ -67,6 +68,7 @@ describe('[checkout-com] configuration', () => {
     expect(getSaveInstrumentKey()).toBe(config.channels.en.saveInstrumentKey);
     expect(getKlarnaContainerSelector()).toBe(config.channels.en.klarna.containerSelector);
     expect(getCurrentChannel()).toBe(config.defaultChannel);
+    expect(isSCAenabled()).toBe(config.channels.en.ckoSCAenabled);
 
   });
 
@@ -110,7 +112,8 @@ describe('[checkout-com] configuration', () => {
             }
           },
           tokenizedCardKey: 'some-token-value-it',
-          saveInstrumentKey: 'some-new-value-it-ab'
+          saveInstrumentKey: 'some-new-value-it-ab',
+          ckoSCAenabled: true
         }
       },
       defaultChannel: 'en'
@@ -128,6 +131,7 @@ describe('[checkout-com] configuration', () => {
     expect(getSaveInstrumentKey()).toBe(config.channels.it.saveInstrumentKey);
     expect(getKlarnaContainerSelector()).toBe(config.channels.it.klarna.containerSelector);
     expect(getCurrentChannel()).toBe(newChannel);
+    expect(isSCAenabled()).toBe(config.channels.it.ckoSCAenabled);
 
   });
 
