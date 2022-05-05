@@ -88,7 +88,7 @@ const setChannel = (channel: string) => {
   config.saveInstrumentKey = pickedChannel.saveInstrumentKey || config.saveInstrumentKey;
   config.ctApiUrl = pickedChannel.ctApiUrl || config.ctApiUrl;
   config.currentChannel = channel;
-  config.ckoSCAenabled = pickedChannel.ckoSCAenabled || config.ckoSCAenabled;
+  config.ckoSCAenabled = !!pickedChannel.ckoSCAenabled;
 };
 
 const setup = ({ channels, defaultChannel }: MultichannelConfiguration) => {
