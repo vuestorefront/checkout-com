@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.0
+- Strong Customer Authentication support ([#23](https://github.com/vuestorefront/checkout-com/issues/23))
+
 ## 0.1.2
 - `attempt_n3d` parameter for makePayment method ([#16](https://github.com/vuestorefront/checkout-com/issues/16))
 
