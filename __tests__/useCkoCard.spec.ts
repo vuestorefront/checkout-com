@@ -1,7 +1,7 @@
 import useCkoCard from '../src/useCkoCard';
 import { createContext, createPayment, getCustomerCards, removeSavedCard } from '../src/payment';
-import { getCurrentPaymentMethodPayload, getTransactionToken, removeTransactionToken, setTransactionToken, CkoPaymentType } from '../src/helpers';
-import { getPublicKey, getFramesStyles } from '../src/configuration';
+import { getCurrentPaymentMethodPayload, getTransactionToken, removeTransactionToken, setTransactionToken, CkoPaymentType, CkoChallengeIndicatorType } from '../src/helpers';
+import { getPublicKey, getFramesStyles, isSCAenabled } from '../src/configuration';
 import { ref } from '@vue/composition-api';
 
 const defaultPaymentResponse = {
@@ -23,10 +23,12 @@ jest.mock('../src/helpers', () => ({
   removeTransactionToken: jest.fn(),
   getTransactionToken: jest.fn(),
   CkoPaymentType: jest.requireActual('../src/helpers').CkoPaymentType,
+  CkoChallengeIndicatorType: jest.requireActual('../src/helpers').CkoChallengeIndicatorType,
   PaymentInstrument: jest.requireActual('../src/helpers').PaymentInstrument
 }));
 jest.mock('../src/configuration', () => ({
   getPublicKey: jest.fn(),
+  isSCAenabled: jest.fn(),
   getFramesStyles: jest.fn(),
   getTransactionTokenKey: jest.fn(),
   getFramesLocalization: jest.fn(),
@@ -232,7 +234,8 @@ describe('[checkout-com] useCkoCard', () => {
         success_url: `${window.location.origin}/cko/payment-success`,
         failure_url: `${window.location.origin}/cko/payment-error`,
         reference: null,
-        attempt_n3d: false
+        attempt_n3d: false,
+        challenge_indicator3d: null
       }
       /* eslint-enable */
 
@@ -269,7 +272,88 @@ describe('[checkout-com] useCkoCard', () => {
         failure_url: payload.failure_url,
         reference: 'zyxxzxz',
         token,
+        attempt_n3d: false,
+        challenge_indicator3d: null
+      }
+      /* eslint-enable */
+
+      await makePayment(payload);
+
+      expect(getCurrentPaymentMethodPayload).toHaveBeenCalledWith(CkoPaymentType.CREDIT_CARD, expectedObject);
+
+    });
+
+    it('sets challenge_indicator3d if SCA is enabled', async () => {
+
+      const token = '123';
+      (getTransactionToken as jest.Mock).mockImplementation(() => token);
+      (isSCAenabled as jest.Mock).mockImplementation(() => true);
+
+      /*eslint-disable */
+      const payload = {
+        cartId: 15,
+        contextDataId: 'abc',
+        email: 'ab@gmail.com',
+        secure3d: true,
+        savePaymentInstrument: true,
+        success_url: 'aa',
+        failure_url: 'bb',
+        reference: 'zyxxzxz',
+        token,
         attempt_n3d: false
+      };
+ 
+      const expectedObject = {
+        cvv: null,
+        secure3d: payload.secure3d,
+        context_id: payload.contextDataId,
+        save_payment_instrument: payload.savePaymentInstrument,
+        success_url: payload.success_url,
+        failure_url: payload.failure_url,
+        reference: 'zyxxzxz',
+        token,
+        attempt_n3d: false,
+        challenge_indicator3d: CkoChallengeIndicatorType.CHALLENGE_REQUESTED_MANDATE
+      }
+      /* eslint-enable */
+
+      await makePayment(payload);
+
+      expect(getCurrentPaymentMethodPayload).toHaveBeenCalledWith(CkoPaymentType.CREDIT_CARD, expectedObject);
+
+    });
+
+    it('does not set challenge_indicator3d if SCA is enabled and savePaymentInstrument is false', async () => {
+
+      const token = '123';
+      (getTransactionToken as jest.Mock).mockImplementation(() => token);
+      (isSCAenabled as jest.Mock).mockImplementation(() => true);
+
+      /*eslint-disable */
+      const payload = {
+        cartId: 15,
+        contextDataId: 'abc',
+        email: 'ab@gmail.com',
+        secure3d: true,
+        savePaymentInstrument: false,
+        success_url: 'aa',
+        failure_url: 'bb',
+        reference: 'zyxxzxz',
+        token,
+        attempt_n3d: false
+      };
+ 
+      const expectedObject = {
+        cvv: null,
+        secure3d: payload.secure3d,
+        context_id: payload.contextDataId,
+        save_payment_instrument: payload.savePaymentInstrument,
+        success_url: payload.success_url,
+        failure_url: payload.failure_url,
+        reference: 'zyxxzxz',
+        token,
+        attempt_n3d: false,
+        challenge_indicator3d: null
       }
       /* eslint-enable */
 

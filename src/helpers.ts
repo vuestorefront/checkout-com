@@ -11,6 +11,7 @@ interface PaymentPropeties {
     failure_url?: string,
     token?: string,
     reference?: string;
+    challenge_indicator3d?: CkoChallengeIndicatorType;
 }
 
 interface PaymentMethodPayload extends PaymentPropeties {
@@ -50,10 +51,18 @@ enum CkoPaymentType {
     SOFORT
 }
 
-const buildBasePaymentMethodPayload = ({ context_id, save_payment_instrument, secure3d, attempt_n3d, success_url, failure_url, cvv, reference }: PaymentPropeties) => {
+enum CkoChallengeIndicatorType {
+  NO_PREFERENCE = 'no_preference',
+  NO_CHALLENGE_REQUESTED = 'no_challenge_requested',
+  CHALLENGE_REQUESTED = 'challenge_requested',
+  CHALLENGE_REQUESTED_MANDATE = 'challenge_requested_mandate'
+}
+
+const buildBasePaymentMethodPayload = ({ context_id, save_payment_instrument, secure3d, attempt_n3d, success_url, failure_url, cvv, reference, challenge_indicator3d }: PaymentPropeties) => {
     const threeDs = {
         ...(secure3d ? { enabled: secure3d } : {}),
         ...(attempt_n3d ? { attempt_n3d } : {}),
+        ...(challenge_indicator3d ? { challenge_indicator: challenge_indicator3d } : {}),
     };
 
     return {
@@ -101,6 +110,7 @@ const removeTransactionToken = () => sessionStorage.removeItem(getTransactionTok
 
 export {
   CkoPaymentType,
+  CkoChallengeIndicatorType,
   PaymentPropeties,
   PaymentMethodPayload,
   PaymentInstrument,
