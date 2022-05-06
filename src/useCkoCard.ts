@@ -44,7 +44,7 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
       }
 
       const isSavePaymentInstrument = selectedPaymentMethod.value === CkoPaymentType.CREDIT_CARD && savePaymentInstrument;
-      const challengeIdicator3d = isSCAenabled() && isSavePaymentInstrument ? CkoChallengeIndicatorType.CHALLENGE_REQUESTED_MANDATE : null;
+      const challengeIndicator3d = isSavePaymentInstrument && isSCAenabled() ? CkoChallengeIndicatorType.CHALLENGE_REQUESTED_MANDATE : null;
 
       const payment = await createPayment(
         getCurrentPaymentMethodPayload(selectedPaymentMethod.value, {
@@ -55,7 +55,7 @@ const useCkoCard = (selectedPaymentMethod: Ref<CkoPaymentType>) => {
           reference,
           context_id: contextDataId || context.data.id,
           save_payment_instrument: isSavePaymentInstrument,
-          challenge_indicator3d: challengeIdicator3d,
+          challenge_indicator3d: challengeIndicator3d,
           success_url: success_url || `${window.location.origin}/cko/payment-success`,
           failure_url: failure_url || `${window.location.origin}/cko/payment-error`
         })

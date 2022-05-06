@@ -1,7 +1,7 @@
 import useCkoCard from '../src/useCkoCard';
 import { createContext, createPayment, getCustomerCards, removeSavedCard } from '../src/payment';
 import { getCurrentPaymentMethodPayload, getTransactionToken, removeTransactionToken, setTransactionToken, CkoPaymentType, CkoChallengeIndicatorType } from '../src/helpers';
-import { getPublicKey, getFramesStyles, isSCAenabled} from '../src/configuration';
+import { getPublicKey, getFramesStyles, isSCAenabled } from '../src/configuration';
 import { ref } from '@vue/composition-api';
 
 const defaultPaymentResponse = {
@@ -323,7 +323,7 @@ describe('[checkout-com] useCkoCard', () => {
 
     });
 
-    it('doesn not set challenge_indicator3d if SCA is enabled and savePaymentInstrument is false', async () => {
+    it('does not set challenge_indicator3d if SCA is enabled and savePaymentInstrument is false', async () => {
 
       const token = '123';
       (getTransactionToken as jest.Mock).mockImplementation(() => token);
