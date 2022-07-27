@@ -170,7 +170,7 @@ const useCko = () => {
 
   return {
     availableMethods,
-    error,
+    error: computed(() => error.value || cardError.value),
     selectedPaymentMethod,
     storedPaymentInstruments,
     submitDisabled,
