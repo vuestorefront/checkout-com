@@ -203,11 +203,11 @@ describe('[checkout-com] useCko', () => {
 
   it('sets error if available methods fails', async () => {
 
-    const errorMessage = 'abc';
+    const errorMessage = 'load available methods fails';
     const payload = {
       reference: '1'
     };
-    (createContext as jest.Mock).mockImplementation(() => {
+    const mockCreateContext = (createContext as jest.Mock).mockImplementation(() => {
       throw new Error(errorMessage);
     });
 
@@ -215,6 +215,7 @@ describe('[checkout-com] useCko', () => {
 
     expect(error.value.message).toEqual(errorMessage);
 
+    mockCreateContext.mockReset();
   });
 
   it('stops initForm if initMethods is an empty object', () => {
@@ -339,7 +340,8 @@ describe('[checkout-com] useCko', () => {
   });
 
   it('clears error and makes payment for credit card', async () => {
-    error.value = 'mockedValue';
+    await makePayment({});
+    expect(error.value.message).toBe('Payment method not selected');
 
     /*eslint-disable */
     const payload = {
