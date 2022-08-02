@@ -1,6 +1,7 @@
 import useCko from '../src/useCko';
 import { createContext } from '../src/payment';
 import { CkoPaymentType } from '../src/helpers';
+import { ref } from '@vue/composition-api';
 
 const contextPaymentMethods = [
   {
@@ -61,7 +62,7 @@ const useCkoKlarnaMock = {
 const useCkoCardMock = {
   initCardForm: jest.fn(),
   makePayment: jest.fn(() => finalizeTransactionResponse),
-  error: jest.fn(),
+  error: ref('some-card-weird-error'),
   submitForm: jest.fn(),
   setPaymentInstrument: jest.fn(),
   removePaymentInstrument: jest.fn(),
@@ -88,7 +89,7 @@ jest.mock('../src/payment', () => ({
 }));
 
 jest.mock('@vue-storefront/core', () => ({
-  sharedRef: value => ({value})
+  sharedRef: value => ref(value)
 }))
 
 const localStorageMock = {
@@ -339,9 +340,11 @@ describe('[checkout-com] useCko', () => {
   });
 
   it('clears error and makes payment for credit card', async () => {
-    error.value = 'mockedValue';
+    selectedPaymentMethod.value = null;
+    await makePayment({});
 
     /*eslint-disable */
+    selectedPaymentMethod.value = CkoPaymentType.CREDIT_CARD;
     const payload = {
       cartId: '1',
       email: 'a@gmail.com',
@@ -351,8 +354,9 @@ describe('[checkout-com] useCko', () => {
       failure_url: null
     }
 
-    localStorageMock.getItem.mockImplementation(() => 'true')
+    localStorageMock.getItem.mockImplementation(() => 'true');
     /* eslint-enable */
+    (useCkoCardMock.error.value as any) = null; 
 
     await makePayment(payload);
 
