@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.0
+- Correctly, returning card error in composable ([#25](https://github.com/vuestorefront/checkout-com/issues/25))
+
 ## 0.2.0
 - Strong Customer Authentication support ([#23](https://github.com/vuestorefront/checkout-com/issues/23))
 
