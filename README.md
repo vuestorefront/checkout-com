@@ -12,7 +12,7 @@
 ```
 yarn add @vue-storefront/checkout-com
 ```
-If you are Developing Core of Vue Storefront Next you might need to add `@vue-storefront/checkout-com` to `useRawSource` attribute in one of `buildModules`:
+If you are Developing Core of Alokai Next you might need to add `@vue-storefront/checkout-com` to `useRawSource` attribute in one of `buildModules`:
 ```js
 ['@vue-storefront/nuxt', {
     coreDevelopment: true,
